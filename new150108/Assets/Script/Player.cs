@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
                 mTargetPos = rayhit.point;
                 bMove = true;
             }
+            astar.Inst.GetStartPos(transform.position);
         }
         if (bMove)
         {

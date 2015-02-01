@@ -7,3 +7,12 @@ F:\new150108\Temp\UnityVS_bin\Debug\UnityEditor.xml
 F:\new150108\obj\Debug\UnityVS.new150108.CSharp.csprojResolveAssemblyReference.cache
 F:\new150108\obj\Debug\Assembly-CSharp.dll
 F:\new150108\obj\Debug\Assembly-CSharp.pdb
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\UnityEditor.dll
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\UnityEngine.dll
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\UnityEngine.xml
+D:\MyProject\new150108\Temp\UnityVS_bin\Debug\UnityEditor.xml
+D:\MyProject\new150108\obj\Debug\UnityVS.new150108.CSharp.csprojResolveAssemblyReference.cache
+D:\MyProject\new150108\obj\Debug\Assembly-CSharp.dll
+D:\MyProject\new150108\obj\Debug\Assembly-CSharp.pdb

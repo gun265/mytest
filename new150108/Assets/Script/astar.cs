@@ -15,7 +15,8 @@ public class astar : MonoBehaviour
         get { return inst; }
         private set { }
     }
-
+    bool draw = false;
+    Vector3 vpos = new Vector3();
     //int maxSearchRounds = 0;
     private Node[,] NodeMap = null;
 
@@ -175,7 +176,7 @@ public class astar : MonoBehaviour
 
                             Vector3 start = new Vector3(NodeMap[j, i].xCoord, NodeMap[j, i].yCoord + 0.1f, NodeMap[j, i].zCoord);
                             Vector3 end = new Vector3(NodeMap[x, y].xCoord, NodeMap[x, y].yCoord + 0.1f, NodeMap[x, y].zCoord);
-
+                            
                             UnityEngine.Debug.DrawLine(start, end, Color.green);
                         }
                     }
@@ -188,5 +189,24 @@ public class astar : MonoBehaviour
     {
         //OpenList = new Node[size];
         //CloseList = new Node[size];
+    }
+
+    public void GetStartPos(Vector3 position)
+    {
+        int x = (MapMinPos.x < 0F) ? 
+            Mathf.FloorToInt(((position.x + Mathf.Abs(MapMinPos.x)) / tilesize)) :
+            Mathf.FloorToInt((position.x - MapMinPos.x) / tilesize);
+        int z = (MapMinPos.y < 0F) ? 
+            Mathf.FloorToInt(((position.z + Mathf.Abs(MapMinPos.y)) / tilesize)) :
+            Mathf.FloorToInt((position.z - MapMinPos.y) / tilesize);
+        vpos = new Vector3(NodeMap[x,z].xCoord, NodeMap[x,z].yCoord, NodeMap[x,z].zCoord);
+        draw = true;
+        
+    }
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        if( draw)
+            Gizmos.DrawSphere(vpos, 0.10f);
     }
 }
