@@ -1,0 +1,9 @@
+F:\new150108\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+F:\new150108\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+F:\new150108\Temp\UnityVS_bin\Debug\UnityEditor.dll
+F:\new150108\Temp\UnityVS_bin\Debug\UnityEngine.dll
+F:\new150108\Temp\UnityVS_bin\Debug\UnityEngine.xml
+F:\new150108\Temp\UnityVS_bin\Debug\UnityEditor.xml
+F:\new150108\obj\Debug\UnityVS.new150108.CSharp.csprojResolveAssemblyReference.cache
+F:\new150108\obj\Debug\Assembly-CSharp.dll
+F:\new150108\obj\Debug\Assembly-CSharp.pdb
