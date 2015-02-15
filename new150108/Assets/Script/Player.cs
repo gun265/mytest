@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
             Debug.Log("Enter the RayCast");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rayhit;
-            
+            mTargetPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             //GameObject plane = GameObject.Find("Ground");
             //// 레이캐스팅이 아직 안됨
             ////string str = "x : " + ray.x + ", y : " + ray.y + ", z : " + ray.z;
@@ -55,7 +55,8 @@ public class Player : MonoBehaviour
                 mTargetPos = rayhit.point;
                 bMove = true;
             }
-            astar.Inst.GetStartPos(transform.position);
+            if (mTargetPos != new Vector3(float.MaxValue, float.MaxValue, float.MaxValue))
+                astar.Inst.GetStartPos(transform.position);
         }
         if (bMove)
         {
