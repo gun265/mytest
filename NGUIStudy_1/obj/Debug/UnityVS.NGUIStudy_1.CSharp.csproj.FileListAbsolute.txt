@@ -1,0 +1,12 @@
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\Photon3Unity3D.dll
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\PlayMaker.dll
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\UnityEditor.dll
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\UnityEngine.dll
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\UnityEngine.xml
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\UnityEditor.xml
+D:\NGUIStudy_1\Temp\UnityVS_bin\Debug\Photon3Unity3D.xml
+D:\NGUIStudy_1\obj\Debug\UnityVS.NGUIStudy_1.CSharp.csprojResolveAssemblyReference.cache
+D:\NGUIStudy_1\obj\Debug\Assembly-CSharp.dll
+D:\NGUIStudy_1\obj\Debug\Assembly-CSharp.pdb

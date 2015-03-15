@@ -187,6 +187,8 @@
     <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+    <Compile Include="Assets\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Script\MainCam.cs" />
     <Compile Include="Assets\Script\Minions.cs" />
     <Compile Include="Assets\Script\Node.cs" />
     <Compile Include="Assets\Script\NodeSearch.cs" />

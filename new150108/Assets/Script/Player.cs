@@ -8,13 +8,20 @@ public class Player : MonoBehaviour
     float mSpeed = 0.05f;
     //float mY = 0.5f;
     bool bMove = false;
+    bool bIsMovable = true;
     public List<Vector3> MyPath = new List<Vector3>();
+    Animator Ani;
+    Camera Cam;
 
+    void Awake()
+    {
+        Cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+    }
 
 	// Use this for initialization
 	void Start () 
     {
-	
+        Ani = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -23,8 +30,9 @@ public class Player : MonoBehaviour
 	    if( Input.GetMouseButtonDown(1))
         {
             Debug.Log("Enter the RayCast");
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rayhit;
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             mTargetPos = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             //GameObject plane = GameObject.Find("Ground");
             //// 레이캐스팅이 아직 안됨
@@ -51,21 +59,32 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(ray, out rayhit, Mathf.Infinity))
             {
                 if (rayhit.transform.tag != "grounds")
+                {
+                    bIsMovable = false;
+                    Ani.SetBool("Move", false);
                     return;
+                }
                 mTargetPos = rayhit.point;
-                bMove = true;
+                bIsMovable = bMove = true;
+                Ani.SetBool("Move", true);
             }
-            if (mTargetPos != new Vector3(float.MaxValue, float.MaxValue, float.MaxValue))
-                astar.Inst.GetStartPos(transform.position);
+            //if (mTargetPos != new Vector3(float.MaxValue, float.MaxValue, float.MaxValue))
+              //  astar.Inst.GetStartPos(transform.position);
         }
         if (bMove)
         {
             Vector3 vDir = (mTargetPos - this.transform.position).normalized;
             this.transform.position += vDir * mSpeed;
-            this.transform.LookAt(mTargetPos);
+            if (bIsMovable)
+                this.transform.LookAt(mTargetPos);
+            //Cam.transform.position += vDir * mSpeed; // 카메라 이동
             Debug.DrawLine(transform.position, mTargetPos, Color.black);
             if (Vector3.Distance(this.transform.position, mTargetPos) <= 0.1f)
+            {
                 bMove = false;
+                Ani.SetBool("Move", false);
+            }
+                
         }
 	}
 
@@ -73,5 +92,12 @@ public class Player : MonoBehaviour
     {
         MyPath.Add(vEndPos);
 
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        Debug.Log("충돌감지");
+        bMove = false;
+        Ani.SetBool("Move", false);
     }
 }
