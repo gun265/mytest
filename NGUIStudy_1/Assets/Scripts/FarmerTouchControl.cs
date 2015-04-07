@@ -16,7 +16,7 @@ public class FarmerTouchControl : MonoBehaviour
     // 발사 가능 여부 판단.
     bool enableAttack = true;
     // 발사 재장전 시간
-    public float fireReload = 1;
+    public float fireReload = 0.2f;
     // 발사 후 시간
     float fireTime = 0;
     // 마지막 사용자 입력 위치 저장.
@@ -64,7 +64,7 @@ public class FarmerTouchControl : MonoBehaviour
             {
                 enableAttack = true;
                 fireTime = 0.0f;
-            }   
+            }
         }
 	}
 
@@ -99,5 +99,10 @@ public class FarmerTouchControl : MonoBehaviour
     {
         // 발사 애니메이션이 진행되어 새총 발사를 하게 될 때 발사를 처리한다.
         Fire(lastInputPosition);
+    }
+
+    void FireEnd()
+    {
+        enableAttack = true;
     }
 }

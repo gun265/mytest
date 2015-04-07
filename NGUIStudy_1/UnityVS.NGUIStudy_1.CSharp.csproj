@@ -817,6 +817,7 @@
     <Compile Include="Assets\PlayMaker\Include\iTweenFSMEvents.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\EnemyRanged.cs" />
+    <Compile Include="Assets\Scripts\EnemyShotObj.cs" />
     <Compile Include="Assets\Scripts\FarmerTouchControl.cs" />
     <Compile Include="Assets\Scripts\Fence.cs" />
     <Compile Include="Assets\Scripts\GameData.cs" />

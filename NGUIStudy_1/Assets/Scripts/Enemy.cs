@@ -158,7 +158,7 @@ public class Enemy : MonoBehaviour, IDamageable
         currentState = EnemyState.move;
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         //농장에 피해를 가한다.
         RaycastHit2D findObstacle = Physics2D.Linecast(
