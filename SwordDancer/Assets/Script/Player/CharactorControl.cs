@@ -4,11 +4,38 @@ using System.Collections.Generic;
 
 public class CharactorControl : MonoBehaviour {
 
-    public float moveSpeed = 1.0f;
-    public float rotationSpeed = 1.0f;
+    public  int            playerHP                = 100;
+    public  int            CurrentHP               = 0;
+    public  int             playerDamage            = 3;
+    public  int             DamageRandValue         = 2;
+    public  int             CriDamage               = 2;
+    public  float           CriPercent              = 20f;
+    public  float           moveSpeed               = 1.0f;
+    public  float           rotationSpeed           = 1.0f;
+    public  float           AttackRange             = 2.0f;
+    public  GameMGR         MGR                     = null;
+    public  UISlider        HPbar                   = null;
+    public  bool            IsDead                  = false;
+            Transform       Windparticle            = null;
+            ParticleSystem  WindEffect              = null;
 
-    Vector3 moveVector;
-    Vector3 rotateVector;
+    
+    //public  GameObject  Target                  = null;
+
+    void Awake()
+    {
+        // 게임 매니저 등록
+        MGR = GameObject.Find("GameMGR").GetComponent<GameMGR>();
+
+        // HP설정
+        CurrentHP = playerHP;
+
+        // 파티클 장착
+        Windparticle = (Transform)Instantiate(Resources.Load("Prefab/Wirlwind", typeof(Transform)), transform.position, Quaternion.AngleAxis(-90,Vector3.right));
+        Windparticle.SetParent(transform);
+        WindEffect = (ParticleSystem)Windparticle.GetComponent(typeof(ParticleSystem));
+        WindEffect.Stop();
+    }
 
 	// Use this for initialization
 	void Start () 
@@ -19,56 +46,91 @@ public class CharactorControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        //float amtMove = moveSpeed * Time.smoothDeltaTime;
-        //float amtRotaion = rotationSpeed * Time.smoothDeltaTime;
-
-        // 전방벡터 변수
-        //Vector3 forwardVec = transform.forward;
-        
-
-        // 키보드 조작 부분
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    transform.Translate(forwardVec * amtMove, Space.World);
-        //    this.animation.CrossFade("Hero_Walk");
-        //}
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    //transform.Translate(-1 * Vector3.right * amtMove, Space.World);
-        //    transform.Rotate(Vector3.up, -amtRotaion);
-        //    this.animation.CrossFade("Hero_Walk");
-        //}
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    transform.Translate(-1 * forwardVec * amtMove, Space.World);
-        //    this.animation.CrossFade("Hero_Walk");
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    //transform.Translate(Vector3.right * amtMove, Space.World);
-        //    transform.Rotate(Vector3.up, amtRotaion);
-        //    this.animation.CrossFade("Hero_Walk");
-        //}
-        float horizontalkey = Input.GetAxis("Horizontal");
-        float verticalkey = Input.GetAxis("Vertical");
-
-        playerMove(horizontalkey, verticalkey);   
-
-        if (Input.GetKey(KeyCode.Space))
+        // hp판단
+        if (CurrentHP > 0)
         {
-            this.animation.CrossFade("Hero_Attack");
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Attack();
+            }
+
+            if (Input.GetKey(KeyCode.R))
+            {
+                Whirlwind();
+                //StartCoroutine(Wirldwind());
+            }
+            
+            if (Input.GetKeyUp(KeyCode.R))
+            {
+                Align();
+            }
         }
+        else
+        {
+            if (!IsDead)
+            {
+                animation.CrossFade("Dead");
+                IsDead = true;
+            }            
+        }
+
+        // HP바 조정부분
+        float fHp = (float)CurrentHP / (float)playerHP;
+        HPbar.value = fHp;
 	}
 
-    void playerMove(float h, float v)
+    //public void wirld()
+    //{
+    //    StartCoroutine(Wirldwind());
+    //}
+
+    //IEnumerator Wirldwind()
+    //{
+    //    while(true)
+    //    {
+    //        if (!WindEffect.isPlaying)
+    //        {
+    //        WindEffect.Play();
+    //        }
+    //    transform.rotation *= Quaternion.AngleAxis(10f * rotationSpeed, transform.up);
+    //    Attack();
+    //    }
+    //    yield return null;
+        
+    //}
+
+    public void Whirlwind()
     {
-        this.transform.Translate(this.transform.forward * v * moveSpeed * Time.smoothDeltaTime, Space.World);
-        this.transform.Rotate(transform.up, h * rotationSpeed * Time.smoothDeltaTime);
-        this.animation.CrossFade("Hero_Walk");
+        if (!WindEffect.isPlaying)
+        {
+            WindEffect.Play();
+        }
+        transform.rotation *= Quaternion.AngleAxis(10f * rotationSpeed, transform.up);
+        Attack();
     }
 
-    void onAniEnd()
+    public void Align()
     {
-        this.animation.CrossFade("Hero_Wait");
+        //float angle = Quaternion.Angle(transform.rotation, transform.parent.FindChild("Forward").transform.rotation);
+        //transform.forward = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward;
+        //transform.rotation = Quaternion.identity;
+        if (WindEffect.isPlaying)
+        {
+            WindEffect.Stop();
+        }
+        //StopCoroutine(Wirldwind());
+        transform.LookAt(transform.parent.FindChild("Forward").transform);
+    }
+
+    void Attack()
+    {
+        CriDamage = (Random.Range(0, 100) <= CriPercent ? 2 : 1);
+        MGR.PlayerAttack(Random.Range(playerDamage * CriDamage, (playerDamage + Random.Range(0, DamageRandValue)) * CriDamage));
+        animation.CrossFade("Attack", 0.2f);
+    }
+
+    public void onAniEnd()
+    {
+        animation.CrossFade("Wait", 0.2f);
     }
 }
