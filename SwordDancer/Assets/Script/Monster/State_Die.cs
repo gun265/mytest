@@ -19,7 +19,7 @@ public class State_Die : FSM_State<Slime>
 
     public override void EnterState(Slime _Slime)
     {
-        _Slime.animation.CrossFade("Dead");
+        _Slime.GetComponent<Animation>().CrossFade("Dead");
         _Slime.IsDead = true;
         _Slime.CreateItem(Random.Range(0, 3), Random.Range(0, 4));
     }

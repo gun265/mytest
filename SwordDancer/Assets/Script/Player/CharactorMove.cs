@@ -11,6 +11,7 @@ public class CharactorMove : MonoBehaviour
     void Awake ()
     {
         ChildControl = GetComponentInChildren<CharactorControl>();
+        TempVector = transform.forward;
     }
 
 	// Use this for initialization
@@ -57,7 +58,7 @@ public class CharactorMove : MonoBehaviour
         {
             TempVector = _Dir;
         }
-
+                
         Quaternion angle = Quaternion.LookRotation(TempVector);
         angle *= Quaternion.AngleAxis(CameraAngle, Vector3.up);
         transform.rotation = angle;
@@ -66,6 +67,13 @@ public class CharactorMove : MonoBehaviour
         transform.position += _Distance * transform.forward * ChildControl.moveSpeed * Time.deltaTime;
 
         // Animation
-        ChildControl.animation.CrossFade("Walk", 0.2f);
+        if( _Distance > 0)
+        {
+            ChildControl.GetComponent<Animation>().CrossFade("Walk", 0.2f);
+        }
+        else
+        {
+            ChildControl.GetComponent<Animation>().CrossFade("Wait", 0.2f);
+        }
     }
 }

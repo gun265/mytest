@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 public class CharactorControl : MonoBehaviour {
 
-    public  int            playerHP                = 100;
-    public  int            CurrentHP               = 0;
+    public  int             playerHP                = 100;
+    public  int             CurrentHP               = 0;
+    public  int             playerMP                = 100;
+    public  int             CurrentMP               = 0;
     public  int             playerDamage            = 3;
     public  int             DamageRandValue         = 2;
     public  int             CriDamage               = 2;
@@ -15,9 +17,12 @@ public class CharactorControl : MonoBehaviour {
     public  float           AttackRange             = 2.0f;
     public  GameMGR         MGR                     = null;
     public  UISlider        HPbar                   = null;
+    public  UISlider        MPbar                   = null;
     public  bool            IsDead                  = false;
             Transform       Windparticle            = null;
             ParticleSystem  WindEffect              = null;
+            float           CoolTime                = 1f;
+            float           CurrentTime             = 1f;
 
     
     //public  GameObject  Target                  = null;
@@ -29,6 +34,7 @@ public class CharactorControl : MonoBehaviour {
 
         // HP설정
         CurrentHP = playerHP;
+        CurrentMP = playerMP;
 
         // 파티클 장착
         Windparticle = (Transform)Instantiate(Resources.Load("Prefab/Wirlwind", typeof(Transform)), transform.position, Quaternion.AngleAxis(-90,Vector3.right));
@@ -64,59 +70,50 @@ public class CharactorControl : MonoBehaviour {
             {
                 Align();
             }
+
+            if( CurrentMP < playerMP)
+            {
+                CurrentMP++;
+            }
         }
         else
         {
             if (!IsDead)
             {
-                animation.CrossFade("Dead");
+                GetComponent<Animation>().CrossFade("Dead");
                 IsDead = true;
             }            
         }
 
-        // HP바 조정부분
+        // HPMP바 조정부분
         float fHp = (float)CurrentHP / (float)playerHP;
+        float fMP = (float)CurrentMP / (float)playerMP;
         HPbar.value = fHp;
+        MPbar.value = fMP;        
 	}
-
-    //public void wirld()
-    //{
-    //    StartCoroutine(Wirldwind());
-    //}
-
-    //IEnumerator Wirldwind()
-    //{
-    //    while(true)
-    //    {
-    //        if (!WindEffect.isPlaying)
-    //        {
-    //        WindEffect.Play();
-    //        }
-    //    transform.rotation *= Quaternion.AngleAxis(10f * rotationSpeed, transform.up);
-    //    Attack();
-    //    }
-    //    yield return null;
-        
-    //}
 
     public void Whirlwind()
     {
-        if (!WindEffect.isPlaying)
+        //Instantiae(Resources.Load("Prefab/CFXM_SpikyAura_Character"), transform.position, Quaternion.identity);
+        CurrentTime += Time.deltaTime;
+        Instantiate(Resources.Load("Prefab/CFXM_ElectricityBolt"), transform.position, Quaternion.AngleAxis(-90, Vector3.right) * transform.rotation);
+        if (CoolTime <= CurrentTime)
         {
-            WindEffect.Play();
+            Instantiate(Resources.Load("Prefab/CFXM_Tornado"), transform.position, Quaternion.AngleAxis(-90, Vector3.right));
+            CurrentTime = 0;
         }
-        transform.rotation *= Quaternion.AngleAxis(10f * rotationSpeed, transform.up);
+        CurrentMP -= 2;
+        transform.rotation *= Quaternion.AngleAxis(40f * rotationSpeed, transform.up);
         Attack();
     }
 
     public void Align()
     {
-        //float angle = Quaternion.Angle(transform.rotation, transform.parent.FindChild("Forward").transform.rotation);
-        //transform.forward = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward;
-        //transform.rotation = Quaternion.identity;
         if (WindEffect.isPlaying)
         {
             WindEffect.Stop();
+            Debug.Log("이펙트 종료");
+            CurrentTime = CoolTime;
         }
         //StopCoroutine(Wirldwind());
         transform.LookAt(transform.parent.FindChild("Forward").transform);
@@ -126,11 +123,11 @@ public class CharactorControl : MonoBehaviour {
     {
         CriDamage = (Random.Range(0, 100) <= CriPercent ? 2 : 1);
         MGR.PlayerAttack(Random.Range(playerDamage * CriDamage, (playerDamage + Random.Range(0, DamageRandValue)) * CriDamage));
-        animation.CrossFade("Attack", 0.2f);
+        GetComponent<Animation>().CrossFade("Attack", 0.2f);
     }
 
     public void onAniEnd()
     {
-        animation.CrossFade("Wait", 0.2f);
+        GetComponent<Animation>().CrossFade("Wait", 0.2f);
     }
 }

@@ -23,9 +23,9 @@ public class InvisibleObstacle : MonoBehaviour
     {
         if(_col.gameObject.tag == "Obstacle")
         {
-            Color ori_color = _col.gameObject.renderer.material.color;
+            Color ori_color = _col.gameObject.GetComponent<Renderer>().material.color;
             ori_color.a = 0.1f;
-            _col.gameObject.renderer.material.color = ori_color;
+            _col.gameObject.GetComponent<Renderer>().material.color = ori_color;
         }
     }
 
@@ -33,9 +33,9 @@ public class InvisibleObstacle : MonoBehaviour
     {
         if (_col.gameObject.tag == "Obstacle")
         {
-            Color ori_color = _col.gameObject.renderer.material.color;
+            Color ori_color = _col.gameObject.GetComponent<Renderer>().material.color;
             ori_color.a = 1;
-            _col.gameObject.renderer.material.color = ori_color;
+            _col.gameObject.GetComponent<Renderer>().material.color = ori_color;
         }
     }
 
@@ -45,9 +45,9 @@ public class InvisibleObstacle : MonoBehaviour
         //InvisibleObject(ref _Ohter);
         if (_Other.gameObject.tag == "Obstacle")
         {
-            Color ori_color = _Other.gameObject.renderer.material.color;
+            Color ori_color = _Other.gameObject.GetComponent<Renderer>().material.color;
             ori_color.a = 0.1f;
-            _Other.gameObject.renderer.material.color = ori_color;
+            _Other.gameObject.GetComponent<Renderer>().material.color = ori_color;
         }
     }
 
@@ -56,9 +56,9 @@ public class InvisibleObstacle : MonoBehaviour
         //VisibleObject(ref _Other);
         if (_Other.gameObject.tag == "Obstacle")
         {
-            Color ori_color = _Other.gameObject.renderer.material.color;
+            Color ori_color = _Other.gameObject.GetComponent<Renderer>().material.color;
             ori_color.a = 1;
-            _Other.gameObject.renderer.material.color = ori_color;
+            _Other.gameObject.GetComponent<Renderer>().material.color = ori_color;
         }
     }
 }

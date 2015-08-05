@@ -35,13 +35,13 @@ public class State_Attack : FSM_State<Slime>
         }
 
         AttackTimer += Time.deltaTime;
-        if( !_Slime.myTarget.GetComponent<CharactorControl>().IsDead && _Slime.CheckRange())
+        if (!_Slime.myTarget.GetComponent<CharactorControl>().IsDead && _Slime.CheckRange() && _Slime.CheckAngle())
         {
             if (AttackTimer >= _Slime.AttackSpeed)
             {
                 int Damage = Random.Range(_Slime.SlimeDamage, _Slime.SlimeDamage + _Slime.DamageRandValue);
                 _Slime.MGR.SlimeAttack(Damage);
-                _Slime.animation.CrossFade("Attack", 0.2f);
+                _Slime.GetComponent<Animation>().CrossFade("Attack", 0.2f);
                 AttackTimer = 0.0f;
                 _Slime.ChaseTime = 0.0f;
             }

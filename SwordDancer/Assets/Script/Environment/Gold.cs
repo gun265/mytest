@@ -20,7 +20,7 @@ public class Gold : MonoBehaviour {
         {
             // 골드 수취 및 이펙트 효과 내고 파괴
             GameObject.Find("GameMGR").GetComponent<GameMGR>().goldamount += gold;
-            Instantiate(effect, transform.position, Quaternion.identity);
+            Instantiate(effect, GameObject.Find("PLAYER").transform.FindChild("Cha_Knight").transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

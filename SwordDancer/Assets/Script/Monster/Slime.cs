@@ -21,6 +21,9 @@ public class Slime : MonoBehaviour
     public      bool                    IsDead                  = false;
     public      GameMGR                 MGR;
     public      GameObject              HPBar;
+    public      HUDText                 DMGText                 = null;
+
+
 
     void Awake()
     {
@@ -32,13 +35,12 @@ public class Slime : MonoBehaviour
         Ani = GetComponent<Animation>();
         //체력바 생성
         HPBar = (GameObject)Instantiate(Resources.Load("Prefab/MOBHPbar", typeof(GameObject)), new Vector3(0, 0, 0), Quaternion.identity);
-        HPBar.name = transform.name + "_HP_Bar";
     }
 
 	// Use this for initialization
 	void Start () 
     {
-	    
+        
 	}
 	
 	// Update is called once per frame
@@ -53,7 +55,7 @@ public class Slime : MonoBehaviour
     {
         // 위치 재조정
         Vector3 Pos = Camera.main.WorldToViewportPoint(transform.position);
-        Vector3 hpbarpos = GameObject.Find("UICam").camera.ViewportToWorldPoint(Pos);
+        Vector3 hpbarpos = GameObject.Find("UICam").GetComponent<Camera>().ViewportToWorldPoint(Pos);
         hpbarpos.y += 0.2f;
         HPBar.transform.position = new Vector3(hpbarpos.x, hpbarpos.y, 0);
 
@@ -101,13 +103,22 @@ public class Slime : MonoBehaviour
         return false;
     }
 
+    public bool CheckAngle()
+    {
+        if (Vector3.Dot(myTarget.transform.position, transform.position) >= 0.5f)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void AlphaChange(float _Value, float _Max)
     {
-        Color color = transform.renderer.material.color;
+        Color color = transform.GetComponent<Renderer>().material.color;
         color.a *= _Value;
         if (color.a > _Max)
             color.a = _Max;
-        renderer.material.color = color;
+        GetComponent<Renderer>().material.color = color;
     }
 
     public void ResetState()
@@ -134,10 +145,5 @@ public class Slime : MonoBehaviour
         }
     }
 
-    // 충돌 해제시
-    //void OnCollisionExit(Collision _Other)
-    //{
-        
-    //}
 
 }

@@ -13,6 +13,11 @@ public class GameMGR : MonoBehaviour
     public      List<Transform>             RegenPoint          = null;
     public      bool                        GameEnd             = false;
     public      int                         goldamount          = 0;
+
+    public      GameObject                  HUDText_prefab;
+    public      GameObject                  hudroot             = null;
+                HUDText                     playerdmgtext       = null;
+
     void Awake()
     {
         // 몬스터 추가
@@ -35,7 +40,11 @@ public class GameMGR : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        
+        GameObject Temp = NGUITools.AddChild(hudroot, HUDText_prefab);
+        Temp.name = "Player_Text";
+        playerdmgtext = Temp.GetComponentInChildren<HUDText>();
+        Temp.AddComponent<UIFollowTarget>().target = playerObj.transform;
+        Temp.GetComponent<UIFollowTarget>().top_level = 1;
 	}
 	
 	// Update is called once per frame
@@ -46,7 +55,7 @@ public class GameMGR : MonoBehaviour
         //Debug.Log("플레이어 위치 x : " + pos.x + ", y : " + pos.y + ", z : " + pos.z);
         
         SlimeRegen();
-        Debug.Log("gold : " + goldamount);
+        //Debug.Log("gold : " + goldamount);
 	}
 
     // 몬스터리스트에서 죽은 몬스터를 부활 대기시간 이후 부활시킴
@@ -72,7 +81,8 @@ public class GameMGR : MonoBehaviour
     public void SlimeAttack(int _Damage)
     {
         player.CurrentHP -= _Damage;
-        player.animation.CrossFade("Damage",0.2f);
+        player.GetComponent<Animation>().CrossFade("Damage",0.2f);
+        playerdmgtext.Add( -_Damage, Color.red, 0f);
     }
 
     // 플레이어가 몬스터를 공격할 때
@@ -85,7 +95,11 @@ public class GameMGR : MonoBehaviour
             {
                 if (Vector3.Distance(SlimeList[i].transform.position, player.transform.position) <= player.AttackRange)
                 {
+                    //child.AddComponent<UIFollowTarget>().target = SlimeList[i].transform;
+                    SlimeList[i].GetComponent<Slime>().DMGText.Add( -_Damage, new Color(1,0.647f,0), 0f);
                     SlimeList[i].GetComponent<Slime>().CurrentHP -= _Damage;
+                    SlimeList[i].GetComponent<Rigidbody>().AddForce( (-SlimeList[i].transform.forward + SlimeList[i].transform.up) * 100.0f);
+                    Instantiate(Resources.Load("Prefab/Hit"), SlimeList[i].transform.position, Quaternion.identity);
                 }
             }
         }
@@ -98,10 +112,22 @@ public class GameMGR : MonoBehaviour
         {
             SlimeList.Add((GameObject)Instantiate(SlimePrefab, RegenPoint[Random.Range(0, RegenPoint.Count)].position, Quaternion.identity));
             SlimeList[i].name += (i + 1);
+            SlimeList[i].GetComponent<Slime>().HPBar.name = SlimeList[i].name + "_HP_Bar";
             SlimeList[i].SetActive(true);
             float WaitTime = Random.Range(3f, 6f);
+
+            GameObject Temp = NGUITools.AddChild(hudroot, HUDText_prefab);
+            Temp.name = SlimeList[i].name + "_Text";
+            SlimeList[i].GetComponent<Slime>().DMGText = Temp.GetComponentInChildren<HUDText>();
+            Temp.AddComponent<UIFollowTarget>().target = SlimeList[i].transform;
+            Temp.GetComponent<UIFollowTarget>().top_level = 2;
+
             yield return new WaitForSeconds(WaitTime);
         }
     }
-    
+
+    public void PlayerTextPrint (object _Text, Color _Color)
+    {
+        playerdmgtext.Add(_Text, _Color, 0.0f);
+    }
 }

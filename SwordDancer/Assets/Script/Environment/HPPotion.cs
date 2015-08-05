@@ -8,9 +8,9 @@ public class HPPotion : MonoBehaviour
     void Awake()
     {
         // 알파값 수정
-        Color alpha = renderer.material.color;
+        Color alpha = GetComponent<Renderer>().material.color;
         alpha.a = 0.6f;
-        renderer.material.color = alpha;
+        GetComponent<Renderer>().material.color = alpha;
     }
 
 	// Use this for initialization
@@ -31,7 +31,8 @@ public class HPPotion : MonoBehaviour
         {
             // 치유 및 이펙트 효과 내고 파괴
             GameObject.Find("PLAYER").transform.FindChild("Cha_Knight").GetComponent<CharactorControl>().CurrentHP += heal;
-            Instantiate(effect, transform.position, Quaternion.identity);
+            GameObject.Find("GameMGR").GetComponent<GameMGR>().PlayerTextPrint(heal, Color.green);
+            Instantiate(effect, GameObject.Find("PLAYER").transform.FindChild("Cha_Knight").transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
